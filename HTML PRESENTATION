@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>W9 Sesyon 1 & 2: Paniniwala, Pananampalataya, at Kamalayan</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        heading: ['Oswald', 'sans-serif'],
+                    },
+                    colors: {
+                        'belief-dark': '#0f172a',    // Deep slate
+                        'belief-navy': '#1e3a8a',    // Rich navy
+                        'belief-gold': '#fbbf24',    // Bright gold
+                        'belief-teal': '#0d9488',    // Spiritual teal
+                        'belief-rust': '#9f1239',    // Deep crimson/rust
+                        'belief-light': '#f8fafc',   // Crisp white
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px; 
+        }
+
+        @media (min-width: 768px) { html, body { font-size: 18px; } }
+
+        h1, h2, h3, h4, .font-heading { font-family: 'Oswald', sans-serif; letter-spacing: 0.04em; }
+
+        /* Unified Global Background Graphic */
+        .bg-layer {
+            position: fixed; inset: 0; z-index: -2;
+            background-image: url('https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?q=80&w=1920'); /* Ethereal historical/nature vibe */
+            background-size: cover; background-position: center; opacity: 1;
+            animation: bgZoom 60s alternate infinite ease-in-out;
+            filter: grayscale(30%) sepia(20%) brightness(0.5);
+        }
+        
+        .bg-overlay {
+            position: fixed; inset: 0; z-index: -1;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 58, 138, 0.85) 100%);
+        }
+
+        @keyframes bgZoom { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
+
+        /* Glassmorphism Utilities */
+        .glass {
+            background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(251, 191, 36, 0.3); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(251, 191, 36, 0.05);
+        }
+        .glass-dark { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.1); }
+
+        /* Slides Architecture */
+        .slides-container { position: relative; width: 100%; height: 100%; z-index: 10; }
+        .slide {
+            position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; opacity: 0;
+            pointer-events: none; transform: scale(0.95); transition: all 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+            overflow-y: auto; overflow-x: hidden;
+        }
+        .slide-inner { margin: auto 0; width: 100%; padding: 5rem 1.5rem 8rem 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        @media (min-width: 768px) { .slide-inner { padding: 4rem 5%; } }
+        .slide.active { opacity: 1; pointer-events: auto; transform: scale(1); z-index: 10; }
+
+        /* Staggered Entry Animations */
+        @keyframes contentFadeInUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+        .slide .stagger-1, .slide .stagger-2, .slide .stagger-3, .slide .stagger-4, .slide .stagger-5 { opacity: 0; transform: translateY(20px); }
+        .slide.active .stagger-1 { animation: contentFadeInUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.2s; }
+        .slide.active .stagger-2 { animation: contentFadeInUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.4s; }
+        .slide.active .stagger-3 { animation: contentFadeInUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.6s; }
+        .slide.active .stagger-4 { animation: contentFadeInUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.8s; }
+        .slide.active .stagger-5 { animation: contentFadeInUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.0s; }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+
+        /* Cinematic 3D Card Zoom Feature */
+        .zoomable { position: relative; cursor: zoom-in; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s; }
+        @media (min-width: 768px) { .zoomable:hover { transform: scale(1.02) translateY(-5px); box-shadow: 0 25px 40px -5px rgba(0, 0, 0, 0.8); border-color: #fbbf24; } }
+        .zoomable::after { content: "\f00e"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; color: #fbbf24; opacity: 0; transition: opacity 0.3s; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .zoomable:hover::after { opacity: 1; }
+
+        #zoom-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; perspective: 1200px; }
+        #zoom-overlay.active { opacity: 1; pointer-events: auto; cursor: zoom-out; }
+        #zoom-content-wrapper { background: #0f172a; border: 4px solid #fbbf24; border-radius: 1.5rem; padding: 2rem; max-width: 1400px; width: 95%; box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.9), 0 0 50px rgba(251, 191, 36, 0.4); transform-style: preserve-3d; transform: rotateX(20deg) translateY(30px) scale(0.9); transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); max-height: 90vh; overflow-y: auto; position: relative; }
+        #zoom-overlay.active #zoom-content-wrapper { transform: rotateX(0deg) translateY(0) scale(1); }
+        @media (max-width: 768px) { #zoom-content-wrapper { padding: 1.5rem; border-width: 2px; } #zoom-content-wrapper h1, #zoom-content-wrapper h2, #zoom-content-wrapper h3 { font-size: 1.75rem !important; margin-bottom: 1rem !important; line-height: 1.2 !important; color: #fbbf24 !important; } #zoom-content-wrapper p, #zoom-content-wrapper li, #zoom-content-wrapper div:not(.quiz-option) { font-size: 1.1rem !important; line-height: 1.5 !important; color: #f8fafc !important; font-weight: 500 !important; } #zoom-content-wrapper i { font-size: 2rem !important; } #zoom-content-wrapper .grid { grid-template-columns: 1fr !important; } }
+        @media (min-width: 769px) { #zoom-content-wrapper { padding: 4rem; } #zoom-content-wrapper h1, #zoom-content-wrapper h2, #zoom-content-wrapper h3 { font-size: 3.5rem !important; margin-bottom: 1.5rem !important; line-height: 1.2 !important; color: #fbbf24 !important; } #zoom-content-wrapper p, #zoom-content-wrapper li, #zoom-content-wrapper div:not(.quiz-option) { font-size: 2rem !important; line-height: 1.6 !important; color: #f8fafc !important; font-weight: 500 !important; } }
+
+        /* 3D Flip Cards */
+        .flip-card-container { perspective: 1000px; cursor: pointer; min-height: 200px; }
+        @media (min-width: 768px) { .flip-card-container { min-height: 300px; } }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
+        .flip-card-container.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back { position: absolute; inset: 0; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); }
+        .flip-card-back { transform: rotateY(180deg); background: rgba(30, 58, 138, 0.95); border: 2px solid #fbbf24; }
+
+        /* Word Highlight Feature */
+        .word-hl { display: inline-block; transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); cursor: pointer; position: relative; }
+        .word-hl.active { background-color: #fbbf24; color: #0f172a !important; transform: scale(1.15) translateY(-2px); border-radius: 0.25rem; padding: 0 0.25rem; margin: 0 -0.25rem; font-weight: 700; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.6); z-index: 20; }
+
+        /* Dynamic Navigation Panel */
+        #nav-panel { position: fixed; bottom: 1rem; right: 1rem; z-index: 900; display: flex; align-items: center; gap: 0.25rem; padding: 0.5rem; border-radius: 999px; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.9); background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(251, 191, 36, 0.4); color: #f8fafc; }
+        @media (min-width: 768px) { #nav-panel { bottom: 1.5rem; right: 1.5rem; gap: 0.5rem; padding: 0.5rem 1rem; } }
+        #nav-panel.minimized { transform: translateX(calc(100% - 2.5rem)); opacity: 0.4; }
+        .nav-btn { width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1rem; background: rgba(255, 255, 255, 0.1); color: #f8fafc; transition: all 0.2s; border: 1px solid transparent; cursor: pointer; }
+        .nav-btn:hover { background: rgba(251, 191, 36, 0.5); border-color: rgba(251, 191, 36, 1); transform: scale(1.1); }
+        @keyframes pulse-glow { 0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(251, 191, 36, 0); } 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); } }
+        .btn-next.pulsing { background-color: #fbbf24; color: #0f172a; animation: pulse-glow 2s infinite; }
+
+        /* Draggable Timer Styles */
+        #floating-timer-container { position: fixed; top: 1rem; left: 50%; transform: translateX(-50%); z-index: 1000; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border: 2px solid #fbbf24; padding: 0.5rem 1rem; border-radius: 999px; display: none; align-items: center; gap: 1rem; box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 30px rgba(251, 191, 36, 0.3); cursor: move; user-select: none; width: max-content; max-width: 90vw; flex-wrap: wrap; justify-content: center; }
+        @media (min-width: 768px) { #floating-timer-container { top: 2rem; padding: 1rem 2rem; gap: 1.5rem; } }
+        #floating-timer-container.visible { display: flex; }
+        #ft-display { font-family: monospace; font-size: 2rem; font-weight: bold; color: #fbbf24; letter-spacing: 2px; }
+        @media (min-width: 768px) { #ft-display { font-size: 3rem; } }
+        .ft-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; width: 2.5rem; height: 2.5rem; border-radius: 50%; cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center;}
+        .ft-btn:hover { background: #fbbf24; color: #0f172a; }
+
+        /* Quick Check Reveal */
+        .check-reveal { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.5s ease; }
+        .check-reveal.show { max-height: 200px; opacity: 1; margin-top: 1rem; }
+
+    </style>
+</head>
+<body class="text-gray-100 antialiased">
+
+    <!-- Top Left Force Fetch Button -->
+    <button id="forceBgBtn" class="fixed top-4 left-4 z-[1000] bg-slate-800/80 text-xs text-white px-3 py-2 rounded-lg border border-slate-500 hover:bg-slate-700 transition-colors shadow-lg backdrop-blur-sm">
+        <i class="fas fa-image mr-1"></i> Force Fetch BG
+    </button>
+    
+    <div id="bg-container">
+        <div class="bg-layer"></div>
+        <div class="bg-overlay"></div>
+    </div>
+
+    <!-- Draggable Floating Timer -->
+    <div id="floating-timer-container">
+        <i class="fas fa-grip-lines-vertical text-gray-500 cursor-move hidden md:block"></i>
+        <i class="fas fa-users-gear text-belief-gold text-xl md:text-2xl animate-pulse"></i>
+        <div id="ft-display">20:00</div>
+        <div class="flex gap-2">
+            <button id="ft-play" class="ft-btn"><i class="fas fa-play"></i></button>
+            <button id="ft-pause" class="ft-btn hidden"><i class="fas fa-pause"></i></button>
+            <button id="ft-reset" class="ft-btn"><i class="fas fa-rotate-right"></i></button>
+            <button id="ft-close" class="ft-btn bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <div class="slides-container" id="slides-container">
+
+        <!-- SLIDE 1: Title Slide -->
+        <div class="slide active">
+            <div class="slide-inner">
+                <div class="stagger-1 inline-block px-4 py-2 md:px-8 md:py-3 mb-6 rounded-full border border-belief-gold text-belief-gold font-bold tracking-widest uppercase text-xs md:text-base glass text-center shadow-[0_0_15px_rgba(251,191,36,0.3)]">
+                    <i class="fas fa-hands-praying mr-2 text-belief-gold"></i> Pag-aaral ng Kasaysayan at Lipunang Pilipino • Linggo 9
+                </div>
+                <h1 class="stagger-1 font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-4 text-center drop-shadow-2xl text-white">
+                    Paniniwala, Pananampalataya, <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-belief-gold via-yellow-200 to-white">at Kamalayang Pangkasaysayan</span>
+                </h1>
+                <div class="stagger-2 flex justify-center items-center gap-2 my-6">
+                    <div class="h-1 md:h-2 w-12 md:w-16 bg-belief-teal rounded-full"></div>
+                    <div class="h-1 md:h-2 w-6 md:w-8 bg-belief-gold rounded-full"></div>
+                    <div class="h-1 md:h-2 w-12 md:w-16 bg-belief-rust rounded-full"></div>
+                </div>
+                <p class="stagger-2 text-lg md:text-2xl text-slate-300 mb-8 max-w-4xl text-center leading-relaxed font-medium">
+                    Pinagsamang Sesyon 1 at 2: Pagsusuri sa paghubog ng ating pambansang pagkakakilanlan sa pamamagitan ng ating mga malalalim na paniniwala.
+                </p>
+                <div class="stagger-3 mt-8 md:absolute md:bottom-16 md:left-16 flex flex-col md:flex-row items-center gap-4 text-belief-light glass px-6 py-3 md:px-8 md:py-4 rounded-3xl md:rounded-full border-l-4 border-belief-gold text-center md:text-left">
+                    <i class="fa-solid fa-chalkboard-user text-2xl md:text-3xl text-belief-gold animate-float"></i>
+                    <span class="text-sm md:text-xl font-bold">Ginoong Jim Mark G. Cabanisas • Grade 11</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: Pangganyak 1 - Awit-Suri -->
+        <div class="slide">
+            <div class="slide-inner">
+                <div class="text-center mb-8 md:mb-12">
+                    <i class="stagger-1 fas fa-music text-[4rem] md:text-[6rem] text-belief-gold mb-4 md:mb-6 drop-shadow-sm animate-float"></i>
+                    <h2 class="stagger-1 font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-white tracking-widest uppercase">Pangganyak: Awit-Suri</h2>
+                    <p class="stagger-2 text-sm md:text-xl text-slate-300 mt-4 font-medium max-w-3xl mx-auto">
+                        Pakinggan at suriin ang liriko ng isang pambansang awitin.
+                    </p>
+                </div>
+                
+                <div class="stagger-3 zoomable glass p-8 md:p-12 rounded-[2rem] border-t-[8px] border-belief-teal w-full max-w-[1200px] text-center shadow-lg">
+                    <h3 class="text-2xl md:text-4xl font-heading text-belief-teal uppercase tracking-widest mb-6">"Bayan Ko"</h3>
+                    <p class="text-lg md:text-2xl text-white leading-relaxed italic mb-8 hl-text">
+                        "Ibon mang may layang lumipad, kulungin mo at umiiyak. <br>
+                        Bayan pa kayang sakdal dilag, ang 'di magnasang makaalpas!"
+                    </p>
+                    <div class="bg-black/50 p-6 rounded-2xl border border-white/10 mt-6 text-left">
+                        <p class="text-belief-gold font-bold text-xl mb-3"><i class="fas fa-question-circle mr-2"></i> Mga Tanong:</p>
+                        <ul class="text-slate-200 text-lg space-y-2 list-disc list-inside">
+                            <li>Paano ipinapakita ng awitin ang <strong>pagmamahal at paniniwala</strong> sa bayan?</li>
+                            <li>Ano ang kaugnayan ng awitin sa <strong>kamalayang pangkasaysayan</strong> ng Pilipinas?</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: Pangganyak 2 - Larawan-Suri -->
+        <div class="slide">
+            <div class="slide-inner">
+                <h2 class="stagger-1 font-heading text-3xl md:text-5xl font-bold mb-6 md:mb-8 text-center text-white drop-shadow-lg">
+                    Larawan-Suri: <span class="text-belief-gold">Isang Paglalakbay</span>
+                </h2>
+                <p class="stagger-1 text-sm md:text-xl text-slate-300 text-center mb-8 max-w-4xl mx-auto">Suriin ang mga sumusunod na imahe. Ano ang sinasabi nito tungkol sa ating pananampalataya?</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full max-w-[1300px]">
+                    <!-- Image 1 -->
+                    <div class="stagger-2 glass p-4 rounded-[1.5rem] border border-white/20 flex flex-col items-center group">
+                        <div class="w-full h-40 md:h-56 rounded-xl overflow-hidden mb-4 relative bg-black">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Anitos_of_Northern_tribes_%28c._1900%2C_Philippines%29.jpg" alt="Anito" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80">
+                        </div>
+                        <h3 class="text-lg md:text-xl font-heading text-belief-gold uppercase tracking-widest text-center mt-2">Sinaunang Anito</h3>
+                    </div>
+                    <!-- Image 2 -->
+                    <div class="stagger-3 glass p-4 rounded-[1.5rem] border border-white/20 flex flex-col items-center group">
+                        <div class="w-full h-40 md:h-56 rounded-xl overflow-hidden mb-4 relative bg-black">
+                            <img src="https://images.unsplash.com/photo-1548345680-f5475ea90f14?q=80&w=800" alt="Church" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80">
+                        </div>
+                        <h3 class="text-lg md:text-xl font-heading text-belief-teal uppercase tracking-widest text-center mt-2">Simbahang Bato</h3>
+                    </div>
+                    <!-- Image 3 -->
+                    <div class="stagger-4 glass p-4 rounded-[1.5rem] border border-white/20 flex flex-col items-center group">
+                        <div class="w-full h-40 md:h-56 rounded-xl overflow-hidden mb-4 relative bg-black">
+                            <img src="https://images.unsplash.com/photo-1516975480201-14ab6e6259ce?q=80&w=800" alt="Bayanihan" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80 grayscale">
+                        </div>
+                        <h3 class="text-lg md:text-xl font-heading text-belief-rust uppercase tracking-widest text-center mt-2">Bayanihan</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: Layunin ng Sesyon -->
+        <div class="slide">
+            <div class="slide-inner">
+                <div class="max-w-4xl w-full text-center">
+                    <i class="stagger-1 fas fa-bullseye text-[4rem] md:text-[6rem] text-belief-rust mb-4 md:mb-6 drop-shadow-sm animate-pulse"></i>
+                    <h2 class="stagger-1 font-heading text-3xl md:text-5xl font-bold text-white tracking-widest uppercase mb-6 md:mb-8">Mga Layunin Natin Ngayon</h2>
+                    
+                    <div class="stagger-2 glass p-6 md:p-10 rounded-[2rem] border-l-[8px] md:border-l-[12px] border-belief-rust text-left shadow-2xl">
+                        <ul class="text-base md:text-2xl text-slate-200 leading-relaxed space-y-4 md:space-y-6 list-none hl-text">
+                            <li class="flex items-start">
+                                <span class="text-belief-gold mr-3 md:mr-4 mt-1"><i class="fas fa-check-circle"></i></span>
+                                <span>Nabibigyang-kahulugan ang kamalayang pangkasaysayan at ang ugnayan nito sa pagkatao.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-belief-gold mr-3 md:mr-4 mt-1"><i class="fas fa-check-circle"></i></span>
+                                <span>Napaghahambing ang katuturan ng <strong>paniniwala</strong> at <strong>pananampalataya</strong> at ang implikasyon nito sa lipunan.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-belief-gold mr-3 md:mr-4 mt-1"><i class="fas fa-check-circle"></i></span>
+                                <span>Naiuugnay ang kahalagahan ng personal at panlipunang paniniwala sa kamalayang pangkasaysayan bilang isang Pilipino.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: Ito ang Kasabihan Ko! -->
+        <div class="slide">
+            <div class="slide-inner">
+                <h2 class="stagger-1 font-heading text-4xl md:text-6xl font-bold mb-6 md:mb-10 text-center text-white drop-shadow-lg">
+                    Ito ang <span class="text-belief-gold">Kasabihan Ko!</span>
+                </h2>
+                
+                <div class="stagger-2 zoomable glass p-8 md:p-12 rounded-[2rem] border-t-[8px] md:border-t-[12px] border-belief-gold w-full max-w-[1200px] text-center shadow-2xl relative overflow-hidden">
+                    <i class="fas fa-quote-right absolute -right-10 -bottom-10 text-[10rem] md:text-[20rem] text-belief-gold opacity-10 pointer-events-none"></i>
+                    
+                    <p class="text-xl md:text-3xl text-white font-medium leading-relaxed mb-8 md:mb-10 relative z-10 hl-text italic">
+                        "Ang hindi marunong lumingon sa pinanggalingan ay hindi makararating sa paroroonan." <br>
+                        <span class="text-lg md:text-2xl text-belief-gold mt-4 block font-bold">- Dr. Jose Rizal</span>
+                    </p>
+                    
+                    <div class="bg-black/50 p-6 md:p-8 rounded-2xl border border-white/20 text-left relative z-10">
+                        <p class="text-lg md:text-xl text-slate-300 font-medium hl-text">
+                            <strong>Pagninilay:</strong> Paano makatutulong ang kasabihang ito, at ang ating kamalayang pangkasaysayan, sa pagbuo ng ating pagkakakilanlan (identity) bilang mga Pilipino ngayon?
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: Deep Dive 1 - Paniniwala -->
+        <div class="slide">
+            <div class="slide-inner">
+                <div class="w-full max-w-[1400px]">
+                    <div class="stagger-1 flex items-center mb-6 md:mb-10">
+                        <div class="w-12 h-12 md:w-20 md:h-20 bg-belief-teal rounded-full flex items-center justify-center mr-4 md:mr-6 shadow-[0_0_20px_rgba(13,148,136,0.5)]">
+                            <i class="fas fa-lightbulb text-2xl md:text-4xl text-white"></i>
+                        </div>
+                        <h2 class="text-3xl md:text-6xl font-heading font-bold text-white">Ano ang <span class="text-belief-teal">Paniniwala?</span></h2>
+                    </div>
+
+                    <p class="stagger-2 text-base md:text-2xl text-slate-200 mb-8 font-medium leading-relaxed hl-text">
+                        Tumutukoy sa mga ideya o konsepto na <strong class="text-belief-teal font-bold">tinatanggap ng isang tao bilang totoo</strong>, kahit na minsan ay wala itong kongkretong ebidensiya o hindi pa lubusang napatunayan. Maaari itong mabago batay sa bagong karanasan.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                        <div class="stagger-3 zoomable glass p-6 md:p-8 rounded-[2rem] border-t-[6px] border-belief-gold flex flex-col relative overflow-hidden">
+                            <h3 class="text-xl md:text-2xl font-heading text-belief-gold mb-2 uppercase">1. Pampersonal</h3>
+                            <p class="text-sm md:text-lg text-slate-300 leading-relaxed hl-text">
+                                Paniniwala sa sarili o sa kakayahan ng ibang tao na magbago o magtagumpay.
+                            </p>
+                        </div>
+
+                        <div class="stagger-4 zoomable glass p-6 md:p-8 rounded-[2rem] border-t-[6px] border-belief-rust flex flex-col relative overflow-hidden">
+                            <h3 class="text-xl md:text-2xl font-heading text-belief-rust mb-2 uppercase">2. Panrelihiyon</h3>
+                            <p class="text-sm md:text-lg text-slate-300 leading-relaxed hl-text">
+                                Paniniwala sa Diyos, sa mga espiritu (anito), o mga aral ng isang partikular na relihiyon.
+                            </p>
+                        </div>
+
+                        <div class="stagger-5 zoomable glass p-6 md:p-8 rounded-[2rem] border-t-[6px] border-belief-navy flex flex-col relative overflow-hidden">
+                            <h3 class="text-xl md:text-2xl font-heading text-blue-400 mb-2 uppercase">3. Panlipunan</h3>
+                            <p class="text-sm md:text-lg text-slate-300 leading-relaxed hl-text">
+                                Mga paniniwalang naging bahagi na ng tradisyon at kaugalian ng isang buong komunidad.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: Deep Dive 2 - Pananampalataya -->
+        <div class="slide">
+            <div class="slide-inner">
+                <div class="w-full max-w-[1400px]">
+                    <div class="stagger-1 flex items-center mb-6 md:mb-10 justify-end text-right">
+                        <h2 class="text-3xl md:text-6xl font-heading font-bold text-white">Ano ang <span class="text-belief-gold">Pananampalataya?</span></h2>
+                        <div class="w-12 h-12 md:w-20 md:h-20 bg-belief-gold rounded-full flex items-center justify-center ml-4 md:ml-6 shadow-[0_0_20px_rgba(251,191,36,0.5)]">
+                            <i class="fas fa-hands-praying text-2xl md:text-4xl text-belief-dark"></i>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                        <div class="stagger-2 flex flex-col justify-center">
+                            <p class="text-base md:text-2xl text-slate-200 mb-6 font-medium leading-relaxed hl-text">
+                                Higit pa sa pag-iisip, ito ay tumutukoy sa <strong class="text-belief-gold font-bold">pagtitiwala, debosyon, at pag-asa</strong>. Ito ay isinasabuhay sa pamamagitan ng aksyon.
+                            </p>
+                            
+                            <ul class="text-sm md:text-xl text-slate-300 space-y-4 list-none hl-text">
+                                <li class="bg-black/40 p-4 rounded-xl border border-white/10"><strong class="text-belief-gold">Debosyon:</strong> Pagmamahal sa isang Diyos o sa Inang Bayan.</li>
+                                <li class="bg-black/40 p-4 rounded-xl border border-white/10"><strong class="text-belief-gold">Pag-asa at Inspirasyon:</strong> Pananampalataya na gaganda ang bukas (nag-udyok sa mga rebolusyonaryo).</li>
+                                <li class="bg-black/40 p-4 rounded-xl border border-white/10"><strong class="text-belief-gold">Komunidad:</strong> Pagkakaisa ng mga tao sa isang paniniwala na nagbubunga ng aksyon (Bayanihan/Sanduguan).</li>
+                            </ul>
+                        </div>
+
+                        <div class="stagger-3 zoomable glass p-8 md:p-12 rounded-[2rem] border-2 border-white/20 text-center flex flex-col items-center justify-center shadow-xl bg-belief-navy/30">
+                            <i class="fas fa-church text-[5rem] md:text-[7rem] text-belief-gold mb-6 animate-float"></i>
+                            <h3 class="text-2xl md:text-3xl font-heading text-white mb-4 uppercase">Ritwal at Tradisyon</h3>
+                            <p class="text-sm md:text-lg text-slate-200 leading-relaxed italic hl-text">
+                                "Ipinapakita natin ang ating pananampalataya sa pamamagitan ng panalangin, pista, at pagbabahagi nito sa iba."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: Interactive Check Intro -->
+        <div class="slide">
+            <div class="slide-inner">
+                <div class="text-center mb-8 md:mb-12">
+                    <i class="stagger-1 fas fa-scale-balanced text-[4rem] md:text-[6rem] text-belief-rust mb-4 md:mb-6 drop-shadow-sm"></i>
+                    <h2 class="stagger-1 font-heading text-3xl md:text-6xl font-bold text-white tracking-widest uppercase">Tukuyin Mo!</h2>
+                    <p class="stagger-2 text-sm md:text-2xl text-slate-300 mt-4 font-medium max-w-3xl mx-auto">
+                        Paniniwala o Pananampalataya?
+                    </p>
+                </div>
+                
+                <div class="stagger-3 glass w-full max-w-4xl rounded-3xl p-8 md:p-12 border-t-[12px] border-belief-rust shadow-2xl text-center">
+                    <p class="text-base md:text-2xl text-belief-light mb-8 leading-relaxed font-medium hl-text">
+                        Basahin ang mga sumusunod na pahayag sa mga susunod na slide. Pag-isipan kung ito ba ay isang <strong class="text-belief-teal font-bold">Paniniwala</strong> (ideyang tinatanggap na totoo) o <strong class="text-belief-gold font-bold">Pananampalataya</strong> (may kasamang debosyon, tiwala, at kilos).
+                    </p>
+                    <p class="text-sm md:text-xl text-slate-400 italic">I-click ang "Reveal" button upang makita ang sagot.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9-13: Interactive Checks -->
+        <!-- Item 1 -->
+        <div class="slide">
+            <div class="slide-inner max-w-4xl w-full">
+                <div class="glass p-10 md:p-16 rounded-[2rem] border-2 border-white/20 text-center w-full">
+                    <h3 class="text-xl md:text-2xl text-slate-400 font-heading mb-6 uppercase tracking-widest border-b border-white/10 pb-4">Pahayag 1</h3>
+                    <p class="text-2xl md:text-4xl text-white font-medium leading-relaxed mb-10 hl-text">
+                        "Ang Diyos ay umiiral at may kontrol sa lahat ng bagay sa kalikasan."
+                    </p>
+                    <button onclick="this.nextElementSibling.classList.remove('hidden'); this.style.display='none'" class="bg-belief-navy hover:bg-blue-800 text-white px-8 py-3 rounded-full font-bold text-lg md:text-xl transition-colors shadow-lg border border-blue-400">
+                        Ipakita ang Sagot
+                    </button>
+                    <div class="hidden bg-belief-gold/20 p-6 rounded-2xl border-2 border-belief-gold shadow-xl mt-4">
+                        <p class="text-2xl md:text-4xl font-heading text-belief-gold font-bold tracking-widest uppercase">Pananampalataya</p>
+                        <p class="text-sm md:text-lg text-slate-300 mt-2">Ito ay nagpapakita ng debosyon at pagkilala sa isang kapangyarihan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="slide">
+            <div class="slide-inner max-w-4xl w-full">
+                <div class="glass p-10 md:p-16 rounded-[2rem] border-2 border-white/20 text-center w-full">
+                    <h3 class="text-xl md:text-2xl text-slate-400 font-heading mb-6 uppercase tracking-widest border-b border-white/10 pb-4">Pahayag 2</h3>
+                    <p class="text-2xl md:text-4xl text-white font-medium leading-relaxed mb-10 hl-text">
+                        "Ang kasaysayan ay isang serye ng mga pangyayari na nagbigay-kahulugan sa ating kasalukuyang mundo."
+                    </p>
+                    <button onclick="this.nextElementSibling.classList.remove('hidden'); this.style.display='none'" class="bg-belief-navy hover:bg-blue-800 text-white px-8 py-3 rounded-full font-bold text-lg md:text-xl transition-colors shadow-lg border border-blue-400">
+                        Ipakita ang Sagot
+                    </button>
+                    <div class="hidden bg-belief-teal/20 p-6 rounded-2xl border-2 border-belief-teal shadow-xl mt-4">
+                        <p class="text-2xl md:text-4xl font-heading text-belief-teal font-bold tracking-widest uppercase">Paniniwala</p>
+                        <p class="text-sm md:text-lg text-slate-300 mt-2">Ito ay isang konsepto o ideya na tinatanggap nating totoo bilang isang lipunan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="slide">
+            <div class="slide-inner max-w-4xl w-full">
+                <div class="glass p-10 md:p-16 rounded-[2rem] border-2 border-white/20 text-center w-full">
+                    <h3 class="text-xl md:text-2xl text-slate-400 font-heading mb-6 uppercase tracking-widest border-b border-white/10 pb-4">Pahayag 3</h3>
+                    <p class="text-2xl md:text-4xl text-white font-medium leading-relaxed mb-10 hl-text">
+                        "Ang mga tao ay may kalayaan na pumili ng kanilang sariling landas at kinabukasan."
+                    </p>
+                    <button onclick="this.nextElementSibling.classList.remove('hidden'); this.style.display='none'" class="bg-belief-navy hover:bg-blue-800 text-white px-8 py-3 rounded-full font-bold text-lg md:text-xl transition-colors shadow-lg border border-blue-400">
+                        Ipakita ang Sagot
+                    </button>
+                    <div class="hidden bg-belief-teal/20 p-6 rounded-2xl border-2 border-belief-teal shadow-xl mt-4">
+                        <p class="text-2xl md:text-4xl font-heading text-belief-teal font-bold tracking-widest uppercase">Paniniwala</p>
+                        <p class="text-sm md:text-lg text-slate-300 mt-2">Ito ay isang personal o pilosopikal na pananaw.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="slide">
+            <div class="slide-inner max-w-4xl w-full">
+                <div class="glass p-10 md:p-16 rounded-[2rem] border-2 border-white/20 text-center w-full">
+                    <h3 class="text-xl md:text-2xl text-slate-400 font-heading mb-6 uppercase tracking-widest border-b border-white/10 pb-4">Pahayag 4</h3>
+                    <p class="text-2xl md:text-4xl text-white font-medium leading-relaxed mb-10 hl-text">
+                        "Ang Binukot sa Panay ay espesyal at hindi dapat makita ng ibang tao maliban sa kanyang pamilya."
+                    </p>
+                    <button onclick="this.nextElementSibling.classList.remove('hidden'); this.style.display='none'" class="bg-belief-navy hover:bg-blue-800 text-white px-8 py-3 rounded-full font-bold text-lg md:text-xl transition-colors shadow-lg border border-blue-400">
+                        Ipakita ang Sagot
+                    </button>
+                    <div class="hidden bg-belief-teal/20 p-6 rounded-2xl border-2 border-belief-teal shadow-xl mt-4">
+                        <p class="text-2xl md:text-4xl font-heading text-belief-teal font-bold tracking-widest uppercase">Paniniwala (Kultural)</p>
+                        <p class="text-sm md:text-lg text-slate-300 mt-2">Ito ay isang tradisyon at ideya na sinusunod ng partikular na grupo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Item 5 -->
+        <div class="slide">
+            <div class="slide-inner max-w-4xl w-full">
+                <div class="glass p-10 md:p-16 rounded-[2rem] border-2 border-white/20 text-center w-full">
+                    <h3 class="text-xl md:text-2xl text-slate-400 font-heading mb-6 uppercase tracking-widest border-b border-white/10 pb-4">Pahayag 5</h3>
+                    <p class="text-2xl md:text-4xl text-white font-medium leading-relaxed mb-10 hl-text">
+                        "Ang pag-aalay ng atang at pagsamba sa mga Anito ng kalikasan upang humingi ng masaganang ani."
+                    </p>
+                    <button onclick="this.nextElementSibling.classList.remove('hidden'); this.style.display='none'" class="bg-belief-navy hover:bg-blue-800 text-white px-8 py-3 rounded-full font-bold text-lg md:text-xl transition-colors shadow-lg border border-blue-400">
+                        Ipakita ang Sagot
+                    </button>
+                    <div class="hidden bg-belief-gold/20 p-6 rounded-2xl border-2 border-belief-gold shadow-xl mt-4">
+                        <p class="text-2xl md:text-4xl font-heading text-belief-gold font-bold tracking-widest uppercase">Pananampalataya</p>
+                        <p class="text-sm md:text-lg text-slate-300 mt-2">Ito ay nagsasangkot ng aktibong debosyon, ritwal, at pag-asa (Animismo).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 14: Metapora ng Puno -->
+        <div class="slide">
+            <div class="slide-inner">
+                <h2 class="stagger-1 font-heading text-4xl md:text-6xl font-bold mb-8 md:mb-12 text-center text-white drop-shadow-lg">
+                    Ang Metapora ng Puno
+                </h2>
+                
+                <div class="flex flex-col md:flex-row gap-8 w-full max-w-[1300px] items-stretch">
+                    <!-- Ugat -->
+                    <div class="stagger-2 zoomable flex-1 glass p-8 md:p-12 rounded-[2rem] border-b-[8px] md:border-b-0 md:border-r-[8px] border-belief-gold flex flex-col justify-center items-center text-center">
+                        <i class="fas fa-seedling text-[5rem] md:text-[7rem] text-belief-gold mb-6 animate-float"></i>
+                        <h3 class="text-3xl md:text-4xl font-heading text-white mb-4 uppercase tracking-widest">Ugat ng Pananampalataya</h3>
+                        <p class="text-lg md:text-xl text-slate-300 font-medium leading-relaxed hl-text">
+                            Ang pananampalataya (faith) ay tulad ng malalalim na ugat na kumakapit sa lupa. Hindi palaging nakikita, ngunit nagbibigay ng lakas, tubig (pag-asa), at tibay sa buong puno upang hindi matumba ng bagyo.
+                        </p>
+                    </div>
+
+                    <!-- Puno/Sanga -->
+                    <div class="stagger-3 zoomable flex-1 glass p-8 md:p-12 rounded-[2rem] border-t-[8px] md:border-t-0 md:border-l-[8px] border-belief-teal flex flex-col justify-center items-center text-center bg-white/5">
+                        <i class="fas fa-tree text-[5rem] md:text-[7rem] text-belief-teal mb-6 animate-float" style="animation-delay: 0.5s;"></i>
+                        <h3 class="text-3xl md:text-4xl font-heading text-white mb-4 uppercase tracking-widest">Puno ng Paniniwala</h3>
+                        <p class="text-lg md:text-xl text-slate-300 font-medium leading-relaxed hl-text">
+                            Ang mga paniniwala (beliefs) ay ang mga sanga, dahon, at bunga. Ito ang mga nakikitang tradisyon, gawi, at batas ng lipunan na sumibol dahil sa matibay na ugat ng ating pananampalataya.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 15: Ugnayan: Paano Nahuhubog ang Kamalayang Pangkasaysayan -->
+        <div class="slide">
+            <div class="slide-inner">
+                <div class="text-center mb-8 md:mb-12">
+                    <i class="stagger-1 fas fa-link text-[4rem] md:text-[6rem] text-belief-rust mb-4 md:mb-6 drop-shadow-sm"></i>
+                    <h2 class="stagger-1 font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-white tracking-widest uppercase">Ang Dakilang Ugnayan</h2>
+                    <p class="stagger-2 text-sm md:text-xl text-slate-300 mt-4 font-medium max-w-4xl mx-auto px-4">
+                        Paano nagiging bahagi ng ating "Kamalayang Pangkasaysayan" (Historical Consciousness) ang mga paniniwala at pananampalataya?
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 16: Elemento 1 & 2 -->
+        <div class="slide">
+            <div class="slide-inner">
+                <h2 class="stagger-1 font-heading text-3xl md:text-5xl font-bold mb-6 md:mb-10 text-center text-white drop-shadow-lg">
+                    Pag-unawa at Identidad
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 w-full max-w-[1300px]">
+                    <div class="stagger-2 zoomable glass p-8 md:p-10 rounded-[2rem] border-t-[8px] border-blue-400">
+                        <div class="flex items-center gap-4 mb-4">
+                            <i class="fas fa-book-open-reader text-3xl md:text-4xl text-blue-400"></i>
+                            <h3 class="text-xl md:text-3xl font-heading text-white uppercase tracking-wider">1. Pag-unawa sa Nakaraan</h3>
+                        </div>
+                        <p class="text-base md:text-xl text-slate-300 leading-relaxed font-medium hl-text">
+                            Hindi natin maiintindihan kung bakit nag-aklas ang ating mga ninuno (tulad ng sa Hermano Pule o mga Katipunero) kung hindi natin alam ang kanilang <strong class="text-white">pananampalataya</strong> na ang kalayaan ay kaloob ng Maykapal.
+                        </p>
+                    </div>
+
+                    <div class="stagger-3 zoomable glass p-8 md:p-10 rounded-[2rem] border-t-[8px] border-belief-gold">
+                        <div class="flex items-center gap-4 mb-4">
+                            <i class="fas fa-fingerprint text-3xl md:text-4xl text-belief-gold"></i>
+                            <h3 class="text-xl md:text-3xl font-heading text-white uppercase tracking-wider">2. Paghubog ng Identidad</h3>
+                        </div>
+                        <p class="text-base md:text-xl text-slate-300 leading-relaxed font-medium hl-text">
+                            Ang paniniwala ng mga Pilipino (sa kapwa, sa pamilya, at sa Diyos) ang naghihiwalay sa atin sa ibang lahi. Ito ang <strong class="text-white">nagbibigay ng kulay sa ating pagka-Pilipino</strong> (tulad ng mga Pista at Bayanihan).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 17: Elemento 3 & 4 -->
+        <div class="slide">
+            <div class="slide-inner">
+                <h2 class="stagger-1 font-heading text-3xl md:text-5xl font-bold mb-6 md:mb-10 text-center text-white drop-shadow-lg">
+                    Kahulugan at Tradisyon
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 w-full max-w-[1300px]">
+                    <div class="stagger-2 zoomable glass p-8 md:p-10 rounded-[2rem] border-t-[8px] border-belief-teal">
+                        <div class="flex items-center gap-4 mb-4">
+                            <i class="fas fa-compass text-3xl md:text-4xl text-belief-teal"></i>
+                            <h3 class="text-xl md:text-3xl font-heading text-white uppercase tracking-wider">3. Pagbibigay Kahulugan</h3>
+                        </div>
+                        <p class="text-base md:text-xl text-slate-300 leading-relaxed font-medium hl-text">
+                            Ang mga simpleng pangyayari sa kasaysayan ay nagkakaroon ng malalim na <strong class="text-white">saysay</strong> dahil sa paniniwala. Halimbawa: Ang pagsabog ng bulkan noon ay tinitingnan bilang galit ng kalikasan at babala na dapat magbago ang lipunan.
+                        </p>
+                    </div>
+
+                    <div class="stagger-3 zoomable glass p-8 md:p-10 rounded-[2rem] border-t-[8px] border-belief-rust">
+                        <div class="flex items-center gap-4 mb-4">
+                            <i class="fas fa-clock-rotate-left text-3xl md:text-4xl text-belief-rust"></i>
+                            <h3 class="text-xl md:text-3xl font-heading text-white uppercase tracking-wider">4. Pagpapanatili ng Tradisyon</h3>
+                        </div>
+                        <p class="text-base md:text-xl text-slate-300 leading-relaxed font-medium hl-text">
+                            Dahil sa pananampalataya (tulad ng pagrespeto sa mga yumaong ninuno o anito), <strong class="text-white">napanatili natin ang ating mga tradisyon</strong> sa kabila ng pananakop at modernisasyon.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 18: Konteksto ng Pilipinas -->
+        <div class="slide">
+            <div class="slide-inner">
+                <h2 class="stagger-1 font-heading text-4xl md:text-6xl font-bold mb-6 md:mb-10 text-center text-white drop-shadow-lg">
+                    Ang Konteksto ng Pilipinas
+                </h2>
+                
+                <div class="stagger-2 zoomable glass p-8 md:p-12 rounded-[2rem] border-l-[12px] border-belief-gold w-full max-w-[1200px] text-center shadow-2xl relative overflow-hidden mx-auto">
+                    <i class="fas fa-cross absolute -right-10 -bottom-10 text-[15rem] md:text-[20rem] text-belief-gold opacity-10 pointer-events-none"></i>
+                    
+                    <p class="text-xl md:text-3xl text-white font-medium leading-relaxed mb-6 relative z-10 hl-text">
+                        Sa kasaysayan ng ating bansa, hindi mahihiwalay ang paniniwala sa mga malalaking kaganapan.
+                    </p>
+                    
+                    <div class="bg-black/50 p-6 md:p-8 rounded-2xl border border-white/20 text-left relative z-10">
+                        <p class="text-lg md:text-2xl text-slate-200 leading-relaxed hl-text">
+                            Ang ating pananampalataya ang nagbigay ng <strong class="text-belief-gold font-bold">tibay ng loob (virtud)</strong> sa mga Katipunero noong Rebolusyon laban sa mga Espanyol. Maging ang Pasyon at mga kwento ng pagiging martir ay ginamit upang maintindihan ng mga Pilipino na ang Pilipinas ay may kalbaryo ngunit magkakaroon din ng <strong class="text-belief-gold font-bold">muling pagkabuhay (kalayaan)</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 19: Pangkatang Gawain: Think, Group, and Share! -->
+        <div class="slide">
+            <div class="slide-inner">
+                <div class="text-center mb-6 md:mb-8">
+                    <i class="stagger-1 fas fa-people-group text-[4rem] md:text-[6rem] text-belief-teal mb-4 md:mb-6 drop-shadow-sm"></i>
+                    <h2 class="stagger-1 font-heading text-3xl md:text-5xl font-bold text-white tracking-widest uppercase">Pangkatang Gawain</h2>
+                </div>
+                
+                <div class="stagger-2 glass w-full max-w-5xl rounded-3xl p-8 md:p-12 border-t-[12px] border-belief-teal text-center shadow-2xl mx-auto">
+                    <h3 class="text-2xl md:text-4xl text-belief-gold font-bold mb-6 uppercase tracking-widest">Think, Group, and Share!</h3>
+                    
+                    <div class="bg-black/40 p-6 md:p-8 rounded-xl border border-belief-teal/50 shadow-inner mb-8 text-left">
+                        <p class="text-lg md:text-2xl text-white font-medium leading-relaxed mb-4 hl-text">
+                            Sa inyong pangkat (5 miyembro), basahin at sagutin ang sitwasyong ito:
+                        </p>
+                        <p class="text-xl md:text-3xl text-belief-teal font-bold italic leading-relaxed hl-text">
+                            "Isang grupo ng mga Pilipino noong panahon ng Espanyol ang tumangging iwanan ang kanilang paniniwala sa mga Anito at lumipat sa bundok. Paano nagbigay ng direksyon at kabuluhan sa kanilang buhay (at sa kasaysayan natin) ang pananampalatayang ito?"
+                        </p>
+                    </div>
+                    
+                    <button onclick="document.getElementById('floating-timer-container').classList.add('visible'); document.getElementById('floating-timer-container').style.display='flex';" class="bg-belief-teal text-white hover:bg-teal-500 px-6 md:px-8 py-3 rounded-full font-bold text-lg md:text-xl transition-colors shadow-lg">
+                        <i class="fas fa-clock mr-2"></i> Ilabas ang Timer (15 Minuto)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 20: Presentasyon -->
+        <div class="slide">
+            <div class="slide-inner">
+                <div class="text-center mb-8 md:mb-12">
+                    <i class="stagger-1 fas fa-microphone-lines text-[5rem] md:text-[8rem] text-belief-gold mb-6 drop-shadow-sm animate-float"></i>
+                    <h2 class="stagger-1 font-heading text-4xl md:text-7xl font-bold text-white tracking-widest uppercase">Ibahagi ang Kaisipan</h2>
+                </div>
+                
+                <div class="stagger-2 glass w-full max-w-4xl rounded-[2rem] p-8 md:p-12 border-t-[12px] border-belief-gold text-center shadow-2xl mx-auto">
+                    <p class="text-xl md:text-3xl text-white mb-8 leading-relaxed font-light">
+                        Pipili tayo ng 2 hanggang 3 grupo na magbabahagi ng kanilang mga naging sagot at pananaw.
+                    </p>
+                    <div class="bg-belief-navy/40 p-6 rounded-xl border border-belief-navy shadow-inner">
+                        <p class="text-lg md:text-2xl text-slate-300 italic hl-text">Maging handa at makinig nang may paggalang sa pananaw ng ibang grupo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 21: Sintesis at Kasunduan -->
+        <div class="slide">
+            <div class="slide-inner">
+                <div class="max-w-5xl w-full text-center glass p-12 md:p-16 rounded-[3rem] border-t-[16px] border-belief-rust relative overflow-hidden shadow-2xl mx-auto">
+                    <i class="fas fa-book-journal-whills text-[12rem] md:text-[20rem] absolute -right-10 -bottom-10 text-belief-rust opacity-10 transform rotate-[15deg]"></i>
+                    <h2 class="stagger-1 text-4xl md:text-6xl font-heading font-bold text-white mb-6 uppercase tracking-widest drop-shadow-lg">Sintesis at Kasunduan</h2>
+                    <div class="stagger-1 h-2 w-32 md:w-48 bg-belief-gold mx-auto my-6 rounded-full"></div>
+                    
+                    <div class="stagger-2 bg-black/50 p-6 md:p-8 rounded-2xl border border-belief-rust/30 shadow-inner mt-4 text-left mb-8 relative z-10">
+                        <p class="text-xl md:text-3xl text-belief-gold font-bold uppercase tracking-widest mb-4"><i class="fas fa-pen-nib mr-3"></i>Exit Ticket (Pagninilay):</p>
+                        <p class="text-base md:text-2xl text-white font-medium leading-relaxed hl-text">
+                            Isulat sa inyong kwaderno: "Bilang isang kabataan ngayon, paano ko gagamitin ang aking mga paniniwala upang makatulong sa pagbuo ng isang mabuting kasaysayan para sa ating bansa?"
+                        </p>
+                    </div>
+                    
+                    <p class="stagger-3 text-lg md:text-2xl text-slate-300 font-bold relative z-10">Tapos na ang Pinagsamang Sesyon 1 at 2. Magandang Araw!</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Draggable Floating Timer -->
+    <div id="floating-timer-container">
+        <i class="fas fa-grip-lines-vertical text-gray-500 cursor-move hidden md:block"></i>
+        <i class="fas fa-stopwatch text-belief-gold text-xl md:text-2xl animate-pulse"></i>
+        <div id="ft-display">15:00</div>
+        <div class="flex gap-2">
+            <button id="ft-play" class="ft-btn"><i class="fas fa-play"></i></button>
+            <button id="ft-pause" class="ft-btn hidden"><i class="fas fa-pause"></i></button>
+            <button id="ft-reset" class="ft-btn"><i class="fas fa-rotate-right"></i></button>
+            <button id="ft-close" class="ft-btn bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <!-- Navigation Panel -->
+    <div id="nav-panel">
+        <button id="btnPinNav" class="nav-btn" aria-label="Pin Navigation" title="Pin Navigation">
+            <i class="fa-solid fa-thumbtack" style="transform: rotate(-45deg);"></i>
+        </button>
+        <div class="h-4 md:h-6 w-px bg-white/20 mx-0.5 md:mx-1"></div> 
+        
+        <button id="btnForceBg" class="nav-btn" aria-label="Reload Background" title="Force Reload Background" onclick="reloadBackground()">
+            <i class="fas fa-image"></i>
+        </button>
+        <button onclick="document.getElementById('floating-timer-container').classList.toggle('visible'); document.getElementById('floating-timer-container').style.display = document.getElementById('floating-timer-container').classList.contains('visible') ? 'flex' : 'none';" class="nav-btn text-belief-gold hover:text-white" title="Toggle Timer">
+            <i class="fas fa-stopwatch"></i>
+        </button>
+        <div class="h-4 md:h-6 w-px bg-white/20 mx-0.5 md:mx-1"></div> 
+
+        <button id="btnFullscreen" class="nav-btn hidden sm:flex" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
+            <i class="fa-solid fa-expand"></i>
+        </button>
+        <button id="btnPrev" class="nav-btn" aria-label="Previous Slide">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <div id="slideCounter" class="font-heading text-sm md:text-lg tracking-widest text-slate-100 mx-1 md:mx-2 font-bold">1 / 21</div>
+        <button id="btnNext" class="nav-btn btn-next pulsing" aria-label="Next Slide">
+            <i class="fa-solid fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <!-- Cinematic 3D Zoom Overlay -->
+    <div id="zoom-overlay" onclick="closeZoomModal()">
+        <div id="zoom-content-wrapper" onclick="event.stopPropagation()">
+            <!-- Content cloned via JS -->
+        </div>
+    </div>
+
+    <script>
+        // --- Force Fetch BG Image Logic ---
+        function reloadBackground() {
+            const bgLayer = document.querySelector('.bg-layer');
+            const baseUrl = 'https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?q=80&w=1920';
+            bgLayer.style.backgroundImage = 'none';
+            setTimeout(() => {
+                bgLayer.style.backgroundImage = `url('${baseUrl}&t=${new Date().getTime()}')`;
+            }, 50);
+            
+            const icon = document.querySelector('#btnForceBg i');
+            icon.className = 'fas fa-spinner fa-spin';
+            setTimeout(() => {
+                icon.className = 'fas fa-check';
+                setTimeout(() => { icon.className = 'fas fa-image'; }, 1000);
+            }, 800);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Slides Management ---
+            const slides = document.querySelectorAll('.slide');
+            const totalSlides = slides.length;
+            let currentSlide = 0;
+            
+            const btnNext = document.getElementById('btnNext');
+            const btnPrev = document.getElementById('btnPrev');
+            const slideCounter = document.getElementById('slideCounter');
+            const navPanel = document.getElementById('nav-panel');
+
+            function updateSlides() {
+                slides.forEach((slide, index) => {
+                    slide.classList.remove('active');
+                    if (index === currentSlide) {
+                        slide.classList.add('active');
+                        slide.scrollTop = 0; 
+                    }
+                });
+                
+                slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+
+                if (currentSlide === totalSlides - 1) {
+                    btnNext.classList.remove('pulsing');
+                } else {
+                    btnNext.classList.add('pulsing');
+                }
+            }
+
+            function nextSlide() {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateSlides();
+                }
+            }
+
+            function prevSlide() {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlides();
+                }
+            }
+
+            btnNext.addEventListener('click', nextSlide);
+            btnPrev.addEventListener('click', prevSlide);
+
+            // --- Keyboard Navigation ---
+            let isZoomOpen = false;
+
+            document.addEventListener('keydown', (e) => {
+                if (isZoomOpen) {
+                    if (e.key === 'Escape') closeZoomModal();
+                    return; 
+                }
+
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    e.preventDefault();
+                    nextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    prevSlide();
+                }
+            });
+
+            // --- Cinematic 3D Zoom Feature ---
+            const zoomables = document.querySelectorAll('.zoomable');
+            const zoomOverlay = document.getElementById('zoom-overlay');
+            const zoomContentWrapper = document.getElementById('zoom-content-wrapper');
+
+            window.openZoomModal = function(element) {
+                isZoomOpen = true;
+                const clone = element.cloneNode(true);
+                clone.classList.remove('zoomable', 'cursor-pointer', 'stagger-1', 'stagger-2', 'stagger-3', 'stagger-4', 'stagger-5');
+                clone.style.transform = 'none';
+                clone.style.boxShadow = 'none';
+                
+                const style = document.createElement('style');
+                style.innerHTML = `#zoom-content-wrapper .zoomable::after { display: none !important; }`;
+                
+                zoomContentWrapper.innerHTML = '';
+                zoomContentWrapper.appendChild(clone);
+                zoomContentWrapper.appendChild(style);
+                
+                zoomOverlay.classList.add('active');
+            };
+
+            window.closeZoomModal = function() {
+                isZoomOpen = false;
+                zoomOverlay.classList.remove('active');
+                setTimeout(() => {
+                    if (!isZoomOpen) zoomContentWrapper.innerHTML = '';
+                }, 400); 
+            }
+
+            zoomables.forEach(elem => {
+                elem.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'BUTTON' || e.target.closest('button')) return;
+                    e.stopPropagation();
+                    openZoomModal(elem);
+                });
+            });
+
+            // --- Word Highlight Feature ---
+            function wrapWordsInElement(element) {
+                if (element.classList.contains('words-wrapped')) return;
+                element.classList.add('words-wrapped');
+
+                const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+                const textNodes = [];
+                let node;
+                while (node = walker.nextNode()) {
+                    if (node.nodeValue.trim() !== '') {
+                        const parentTag = node.parentNode.tagName.toLowerCase();
+                        if (!['script', 'style', 'i', 'button', 'a'].includes(parentTag)) {
+                            textNodes.push(node);
+                        }
+                    }
+                }
+                textNodes.forEach(textNode => {
+                    const words = textNode.nodeValue.split(/(\s+)/);
+                    const fragment = document.createDocumentFragment();
+                    words.forEach(word => {
+                        if (word.trim() === '') {
+                            fragment.appendChild(document.createTextNode(word));
+                        } else {
+                            const span = document.createElement('span');
+                            span.className = 'word-hl';
+                            span.textContent = word;
+                            fragment.appendChild(span);
+                        }
+                    });
+                    textNode.parentNode.replaceChild(fragment, textNode);
+                });
+            }
+
+            document.querySelectorAll('.hl-text').forEach(wrapWordsInElement);
+
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('word-hl')) {
+                    e.stopPropagation(); 
+                    e.target.classList.toggle('active');
+                }
+            });
+
+            // --- Fullscreen API ---
+            const btnFullscreen = document.getElementById('btnFullscreen');
+            if(btnFullscreen){
+                const iconFullscreen = btnFullscreen.querySelector('i.fa-expand, i.fa-compress');
+
+                btnFullscreen.addEventListener('click', () => {
+                    if (!document.fullscreenElement) {
+                        document.documentElement.requestFullscreen().catch(err => {
+                            console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+                        });
+                        iconFullscreen.classList.replace('fa-expand', 'fa-compress');
+                    } else {
+                        document.exitFullscreen();
+                        iconFullscreen.classList.replace('fa-compress', 'fa-expand');
+                    }
+                });
+            }
+
+            // --- Dynamic Auto-Hide Navigation Panel ---
+            const btnPinNav = document.getElementById('btnPinNav');
+            const iconPinNav = btnPinNav.querySelector('i');
+            
+            let navTimeout;
+            let isNavPinned = false;
+
+            function showNav() {
+                navPanel.classList.remove('minimized');
+                resetNavTimer();
+            }
+
+            function resetNavTimer() {
+                clearTimeout(navTimeout);
+                if (!isNavPinned) {
+                    navTimeout = setTimeout(() => {
+                        navPanel.classList.add('minimized');
+                    }, 2500);
+                }
+            }
+
+            document.addEventListener('mousemove', showNav);
+            document.addEventListener('keydown', showNav);
+            document.addEventListener('touchstart', showNav);
+            navPanel.addEventListener('mouseenter', () => clearTimeout(navTimeout));
+            navPanel.addEventListener('mouseleave', resetNavTimer);
+
+            btnPinNav.addEventListener('click', () => {
+                isNavPinned = !isNavPinned;
+                if (isNavPinned) {
+                    iconPinNav.style.transform = 'rotate(0deg)'; 
+                    iconPinNav.classList.add('text-belief-gold');
+                    iconPinNav.classList.remove('text-white');
+                    clearTimeout(navTimeout); 
+                } else {
+                    iconPinNav.style.transform = 'rotate(-45deg)'; 
+                    iconPinNav.classList.remove('text-belief-gold');
+                    iconPinNav.classList.add('text-white');
+                    resetNavTimer(); 
+                }
+            });
+
+            // --- Draggable Timer Logic ---
+            const ftContainer = document.getElementById('floating-timer-container');
+            const ftDisplay = document.getElementById('ft-display');
+            const ftPlay = document.getElementById('ft-play');
+            const ftPause = document.getElementById('ft-pause');
+            const ftReset = document.getElementById('ft-reset');
+            const ftClose = document.getElementById('ft-close');
+
+            let timerInterval;
+            let timeRemaining = 15 * 60; // 15 mins
+            let isTimerRunning = false;
+
+            function updateTimerDisplay() {
+                let m = Math.floor(timeRemaining / 60);
+                let s = timeRemaining % 60;
+                ftDisplay.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                if(timeRemaining <= 60 && timeRemaining > 0) {
+                    ftDisplay.style.color = '#ef4444'; // Red warning
+                } else {
+                    ftDisplay.style.color = '#fbbf24';
+                }
+            }
+
+            ftPlay.addEventListener('click', () => {
+                if (!isTimerRunning && timeRemaining > 0) {
+                    isTimerRunning = true;
+                    ftPlay.classList.add('hidden');
+                    ftPause.classList.remove('hidden');
+                    timerInterval = setInterval(() => {
+                        timeRemaining--;
+                        updateTimerDisplay();
+                        if (timeRemaining <= 0) {
+                            clearInterval(timerInterval);
+                            isTimerRunning = false;
+                            ftPause.classList.add('hidden');
+                            ftPlay.classList.remove('hidden');
+                        }
+                    }, 1000);
+                }
+            });
+
+            ftPause.addEventListener('click', () => {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                ftPause.classList.add('hidden');
+                ftPlay.classList.remove('hidden');
+            });
+
+            ftReset.addEventListener('click', () => {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                timeRemaining = 15 * 60;
+                updateTimerDisplay();
+                ftPause.classList.add('hidden');
+                ftPlay.classList.remove('hidden');
+            });
+
+            ftClose.addEventListener('click', () => {
+                ftContainer.style.display = 'none';
+                ftContainer.classList.remove('visible');
+            });
+
+            // Make Timer Draggable
+            let isDragging = false, currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0;
+
+            ftContainer.addEventListener("mousedown", dragStart);
+            ftContainer.addEventListener("touchstart", dragStart, {passive: false});
+            document.addEventListener("mouseup", dragEnd);
+            document.addEventListener("touchend", dragEnd);
+            document.addEventListener("mousemove", drag);
+            document.addEventListener("touchmove", drag, {passive: false});
+
+            function dragStart(e) {
+                if (e.target.tagName === 'BUTTON' || e.target.closest('button')) return;
+                
+                if (e.type === "touchstart") {
+                    initialX = e.touches[0].clientX - xOffset;
+                    initialY = e.touches[0].clientY - yOffset;
+                } else {
+                    initialX = e.clientX - xOffset;
+                    initialY = e.clientY - yOffset;
+                }
+
+                if (e.target === ftContainer || e.target.closest('#floating-timer-container')) {
+                    isDragging = true;
+                }
+            }
+
+            function dragEnd() {
+                initialX = currentX;
+                initialY = currentY;
+                isDragging = false;
+            }
+
+            function drag(e) {
+                if (isDragging) {
+                    e.preventDefault();
+                    
+                    if (e.type === "touchmove") {
+                        currentX = e.touches[0].clientX - initialX;
+                        currentY = e.touches[0].clientY - initialY;
+                    } else {
+                        currentX = e.clientX - initialX;
+                        currentY = e.clientY - initialY;
+                    }
+
+                    xOffset = currentX;
+                    yOffset = currentY;
+                    ftContainer.style.transform = `translate(calc(-50% + ${currentX}px), ${currentY}px)`;
+                }
+            }
+
+            // Init
+            resetNavTimer();
+            updateSlides();
+            updateTimerDisplay();
+        });
+    </script>
+</body>
+</html>
