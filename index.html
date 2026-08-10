@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>W9 Sesyon 1 & 2: Paniniwala at Pananampalataya</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        heading: ['Oswald', 'sans-serif'],
+                    },
+                    colors: {
+                        'belief-dark': '#0f172a',
+                        'belief-navy': '#1e3a8a',
+                        'belief-gold': '#fbbf24',
+                        'belief-teal': '#0d9488',
+                        'belief-rust': '#9f1239',
+                        'belief-light': '#f8fafc',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html, body {
+            margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden;
+            background-color: #0f172a; color: #f8fafc; font-family: 'Montserrat', sans-serif; font-size: 16px;
+        }
+        h1, h2, h3, h4, .font-heading { font-family: 'Oswald', sans-serif; letter-spacing: 0.04em; }
+
+        .bg-layer {
+            position: fixed; inset: 0; z-index: -2;
+            background-image: url('https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?q=80&w=1920');
+            background-size: cover; background-position: center; opacity: 1;
+            filter: grayscale(30%) sepia(20%) brightness(0.5);
+        }
+        .bg-overlay {
+            position: fixed; inset: 0; z-index: -1;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 58, 138, 0.85) 100%);
+        }
+        .glass {
+            background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(251, 191, 36, 0.3); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Views */
+        .view-container { display: none; width: 100%; height: 100%; overflow-y: auto; overflow-x: hidden; position: relative; z-index: 10;}
+        .view-container.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+        /* Slides */
+        .slides-wrapper { display: none; width: 100%; height: 100%; position: relative; z-index: 10; overflow: hidden; }
+        .slides-wrapper.active { display: block; }
+        .slide {
+            position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; opacity: 0;
+            pointer-events: none; transform: translateX(20px); transition: all 0.5s ease;
+            overflow-y: auto; overflow-x: hidden;
+            padding-bottom: 80px; /* Space for nav */
+        }
+        .slide-inner { margin: auto 0; width: 100%; padding: 2rem 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; max-width: 800px; }
+        .slide.active { opacity: 1; pointer-events: auto; transform: translateX(0); z-index: 10; }
+
+        /* Navigation Panel */
+        #nav-panel { position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%); z-index: 900; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 999px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.9); background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(251, 191, 36, 0.4); color: #f8fafc; }
+        .nav-btn { width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1rem; background: rgba(255, 255, 255, 0.1); color: #f8fafc; transition: all 0.2s; border: 1px solid transparent; cursor: pointer; }
+        .nav-btn:hover { background: rgba(251, 191, 36, 0.5); border-color: rgba(251, 191, 36, 1); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* DNA Teacher Note */
+        .dna-note { margin-top: 1rem; width: 100%; text-align: left; }
+        .dna-toggle { cursor: pointer; color: #fbbf24; font-weight: bold; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; background: rgba(251, 191, 36, 0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; border: 1px dashed #fbbf24; transition: background 0.3s;}
+        .dna-toggle:hover { background: rgba(251, 191, 36, 0.2); }
+        .dna-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease, opacity 0.4s ease; opacity: 0; background: rgba(0,0,0,0.4); border-radius: 0 0 0.5rem 0.5rem; font-size: 0.9rem; border-left: 3px solid #fbbf24; }
+        .dna-content.open { max-height: 300px; padding: 1rem; opacity: 1; }
+
+        /* Quiz styles */
+        .quiz-option { cursor: pointer; transition: all 0.2s; border: 1px solid rgba(255,255,255,0.2); }
+        .quiz-option:hover:not(.disabled) { background: rgba(251, 191, 36, 0.2); border-color: #fbbf24; }
+        .quiz-option.selected { background: #1e3a8a; border-color: #fbbf24; }
+        .quiz-option.correct { background: #0d9488; border-color: #00ff00; }
+        .quiz-option.wrong { background: #9f1239; border-color: #ff0000; }
+        .quiz-option.disabled { cursor: not-allowed; opacity: 0.8; }
+
+        .loader { border: 4px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #fbbf24; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; display: none; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    </style>
+</head>
+<body class="text-gray-100 antialiased">
+    <div class="bg-layer"></div>
+    <div class="bg-overlay"></div>
+
+    <!-- Login View -->
+    <div id="view-login" class="view-container active">
+        <div class="glass p-8 rounded-2xl w-[90%] max-w-md text-center border-t-8 border-belief-gold">
+            <i class="fas fa-user-graduate text-5xl text-belief-gold mb-4"></i>
+            <h1 class="font-heading text-3xl font-bold mb-2">Student Login</h1>
+            <p class="text-sm text-slate-300 mb-6">Enter your ID Number to access the module.</p>
+
+            <input type="text" id="studentId" placeholder="ID Number" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-4 py-3 text-white mb-4 focus:outline-none focus:border-belief-gold text-center text-lg">
+
+            <div id="login-error" class="text-red-400 text-sm mb-4 hidden"></div>
+
+            <button onclick="attemptLogin()" class="w-full bg-belief-gold text-belief-dark font-bold py-3 rounded-lg hover:bg-yellow-400 transition">
+                Log In <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+            <div id="login-loader" class="loader"></div>
+        </div>
+    </div>
+
+    <!-- Welcome View -->
+    <div id="view-welcome" class="view-container">
+        <div class="glass p-8 rounded-2xl w-[90%] max-w-md text-center border-t-8 border-belief-teal">
+            <i class="fas fa-door-open text-5xl text-belief-teal mb-4"></i>
+            <h1 class="font-heading text-3xl font-bold mb-2">Welcome!</h1>
+            <h2 id="studentNameDisplay" class="text-2xl text-belief-gold font-bold mb-4">Name</h2>
+            <p class="text-sm text-slate-300 mb-2">You are about to start the self-learning module on Paniniwala at Pananampalataya.</p>
+            <p id="attemptsDisplay" class="text-sm text-slate-400 mb-6 italic"></p>
+
+            <button onclick="startModule()" class="w-full bg-belief-teal text-white font-bold py-3 rounded-lg hover:bg-teal-500 transition">
+                Start Module <i class="fas fa-play ml-2"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Presentation View -->
+    <div id="view-module" class="slides-wrapper">
+        <div id="slides-container">
+            <!-- Slides will go here -->
+
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <div class="slide-inner">
+                    <div class="inline-block px-4 py-2 mb-4 rounded-full border border-belief-gold text-belief-gold font-bold text-xs glass text-center">
+                        <i class="fas fa-hands-praying mr-1 text-belief-gold"></i> Linggo 9
+                    </div>
+                    <h1 class="font-heading text-3xl sm:text-4xl font-bold leading-tight mb-4 text-center">
+                        Paniniwala, Pananampalataya, <br>
+                        <span class="text-belief-gold">at Kamalayang Pangkasaysayan</span>
+                    </h1>
+                    <p class="text-base text-slate-300 mb-6 text-center">
+                        Pagsusuri sa paghubog ng ating pambansang pagkakakilanlan sa pamamagitan ng ating mga malalalim na paniniwala.
+                    </p>
+
+                    <div class="dna-note">
+                        <div class="dna-toggle" onclick="toggleDna(this)"><i class="fas fa-lightbulb"></i> Teacher's Note</div>
+                        <div class="dna-content">
+                            Welcome sa ating asynchronous module! Basahin nang maigi ang bawat slide. Ang mga konseptong ito ay lalabas sa inyong assessment sa dulo.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: Awit Suri -->
+            <div class="slide">
+                <div class="slide-inner">
+                    <i class="fas fa-music text-4xl text-belief-gold mb-2"></i>
+                    <h2 class="font-heading text-2xl font-bold text-white uppercase mb-4 text-center">Awit-Suri</h2>
+                    <div class="glass p-6 rounded-xl border-t-4 border-belief-teal w-full text-center">
+                        <h3 class="text-xl font-heading text-belief-teal mb-2">"Bayan Ko"</h3>
+                        <p class="text-base text-white italic mb-4">
+                            "Ibon mang may layang lumipad, kulungin mo at umiiyak. <br>
+                            Bayan pa kayang sakdal dilag, ang 'di magnasang makaalpas!"
+                        </p>
+                        <p class="text-sm text-slate-200 text-left">Paano ipinapakita ng awitin ang pagmamahal at paniniwala sa bayan?</p>
+                    </div>
+
+                    <div class="dna-note">
+                        <div class="dna-toggle" onclick="toggleDna(this)"><i class="fas fa-lightbulb"></i> Teacher's Note</div>
+                        <div class="dna-content">
+                            Pansinin ang salitang "makaalpas" (makawala). Ipinapakita nito ang malalim na <strong>paniniwala</strong> natin sa halaga ng kalayaan, na nagtutulak sa ating <strong>pananampalataya</strong> na ipaglaban ito.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Layunin -->
+            <div class="slide">
+                <div class="slide-inner">
+                    <i class="fas fa-bullseye text-4xl text-belief-rust mb-2"></i>
+                    <h2 class="font-heading text-2xl font-bold text-white uppercase mb-4 text-center">Mga Layunin</h2>
+                    <div class="glass p-5 rounded-xl border-l-4 border-belief-rust text-left w-full">
+                        <ul class="text-sm text-slate-200 space-y-3">
+                            <li><i class="fas fa-check text-belief-gold mr-2"></i>Nabibigyang-kahulugan ang kamalayang pangkasaysayan.</li>
+                            <li><i class="fas fa-check text-belief-gold mr-2"></i>Napaghahambing ang paniniwala at pananampalataya.</li>
+                            <li><i class="fas fa-check text-belief-gold mr-2"></i>Naiuugnay ito sa pagiging Pilipino.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Paniniwala -->
+            <div class="slide">
+                <div class="slide-inner">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-lightbulb text-3xl text-belief-teal mr-3"></i>
+                        <h2 class="text-2xl font-heading font-bold">Ano ang <span class="text-belief-teal">Paniniwala?</span></h2>
+                    </div>
+                    <p class="text-base text-slate-200 mb-4">
+                        Ideya o konsepto na <strong>tinatanggap bilang totoo</strong>. Maaaring pampersonal, panrelihiyon, o panlipunan. Maaari itong mabago.
+                    </p>
+                    <div class="space-y-3 w-full">
+                        <div class="glass p-4 rounded-lg border-l-4 border-belief-gold text-sm">
+                            <span class="font-bold text-belief-gold">Panlipunan:</span> Mga tradisyon ng komunidad.
+                        </div>
+                    </div>
+
+                    <div class="dna-note">
+                        <div class="dna-toggle" onclick="toggleDna(this)"><i class="fas fa-lightbulb"></i> Teacher's Note</div>
+                        <div class="dna-content">
+                            Halimbawa ng paniniwala: "Masama magwalis sa gabi dahil lalabas ang swerte." Ito ay tinanggap nating totoo bilang bahagi ng kultura natin.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Pananampalataya -->
+            <div class="slide">
+                <div class="slide-inner">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-hands-praying text-3xl text-belief-gold mr-3"></i>
+                        <h2 class="text-2xl font-heading font-bold">Ano ang <span class="text-belief-gold">Pananampalataya?</span></h2>
+                    </div>
+                    <p class="text-base text-slate-200 mb-4">
+                        Higit pa sa pag-iisip; ito ay <strong>pagtitiwala, debosyon, at pag-asa</strong>. Isinasabuhay sa pamamagitan ng aksyon.
+                    </p>
+                    <div class="space-y-3 w-full">
+                        <div class="glass p-4 rounded-lg border-l-4 border-belief-rust text-sm">
+                            <span class="font-bold text-belief-rust">Aksyon:</span> Mga ritwal, debosyon, at pagkakaisa (Bayanihan).
+                        </div>
+                    </div>
+
+                    <div class="dna-note">
+                        <div class="dna-toggle" onclick="toggleDna(this)"><i class="fas fa-lightbulb"></i> Teacher's Note</div>
+                        <div class="dna-content">
+                            Difference check! Kung ang paniniwala ay nasa isip, ang pananampalataya ay nasa Gawa (Aksyon) at Puso (Debosyon).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6: Puno Metaphor -->
+            <div class="slide">
+                <div class="slide-inner">
+                    <h2 class="text-2xl font-heading font-bold mb-6 text-center">Metapora ng Puno</h2>
+
+                    <div class="w-full glass p-5 rounded-xl border-b-4 border-belief-gold text-center mb-4">
+                        <i class="fas fa-seedling text-4xl text-belief-gold mb-2"></i>
+                        <h3 class="text-xl font-heading text-white">Ugat: Pananampalataya</h3>
+                        <p class="text-sm text-slate-300">Hindi nakikita, ngunit nagbibigay tibay at pag-asa.</p>
+                    </div>
+
+                    <div class="w-full glass p-5 rounded-xl border-t-4 border-belief-teal text-center">
+                        <i class="fas fa-tree text-4xl text-belief-teal mb-2"></i>
+                        <h3 class="text-xl font-heading text-white">Puno/Sanga: Paniniwala</h3>
+                        <p class="text-sm text-slate-300">Mga nakikitang tradisyon na sumibol mula sa ugat.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 7: Kamalayang Pangkasaysayan -->
+            <div class="slide">
+                <div class="slide-inner">
+                    <i class="fas fa-fingerprint text-4xl text-blue-400 mb-2"></i>
+                    <h2 class="text-2xl font-heading font-bold text-center mb-4">Kamalayang Pangkasaysayan</h2>
+                    <p class="text-sm text-slate-200 mb-4 text-center">
+                        Ito ang pag-unawa kung paano nakakaapekto ang nakaraan sa kasalukuyan at sa ating pagkatao.
+                    </p>
+
+                    <div class="glass p-4 rounded-xl border-l-4 border-blue-400 text-sm mb-3 w-full">
+                        <strong>Paghubog ng Identidad:</strong> Ang paniniwala ng Pilipino (sa kapwa, Diyos) ang naghihiwalay sa atin sa ibang lahi.
+                    </div>
+
+                    <div class="dna-note">
+                        <div class="dna-toggle" onclick="toggleDna(this)"><i class="fas fa-lightbulb"></i> Teacher's Note</div>
+                        <div class="dna-content">
+                            Historical Consciousness. Dahil alam natin ang hirap ng ating mga ninuno, nagkakaroon ng malalim na meaning ang ating kalayaan ngayon.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 8: Pilipinas -->
+            <div class="slide">
+                <div class="slide-inner">
+                    <h2 class="text-2xl font-heading font-bold mb-4 text-center">Konteksto ng Pilipinas</h2>
+                    <div class="glass p-6 rounded-xl border-t-4 border-belief-gold text-center w-full">
+                        <p class="text-base text-slate-200 mb-4">
+                            Ang pananampalataya ang nagbigay ng <strong>tibay ng loob (virtud)</strong> sa mga Katipunero.
+                        </p>
+                        <p class="text-sm text-slate-300">
+                            Ang "Pasyon" ay ginamit upang iparating na ang Pilipinas ay may kalbaryo ngunit magkakaroon din ng kalayaan (muling pagkabuhay).
+                        </p>
+                    </div>
+
+                    <div class="dna-note">
+                        <div class="dna-toggle" onclick="toggleDna(this)"><i class="fas fa-lightbulb"></i> Teacher's Note</div>
+                        <div class="dna-content">
+                            Ito ang patunay na hindi mahihiwalay ang kasaysayan sa relihiyon at paniniwala natin. Ginamit nila ang kwento ni Hesus para ma-inspire ang mga tao na mag-rebolusyon!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 9: To Assessment -->
+            <div class="slide">
+                <div class="slide-inner text-center">
+                    <i class="fas fa-clipboard-list text-6xl text-belief-rust mb-6"></i>
+                    <h2 class="text-3xl font-heading font-bold mb-4">Handa ka na ba?</h2>
+                    <p class="text-base text-slate-300 mb-6">Tapos mo na ang pag-aaral ng module. Maaari mo na ngayong kunin ang pagsusulit.</p>
+                    <button onclick="startAssessment()" class="w-full max-w-xs bg-belief-rust text-white font-bold py-3 rounded-lg hover:bg-red-800 transition shadow-lg">
+                        Simulan ang Pagsusulit <i class="fas fa-pen ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Nav -->
+        <div id="nav-panel">
+            <button id="btnPrev" class="nav-btn" onclick="prevSlide()"><i class="fa-solid fa-arrow-left"></i></button>
+            <div id="slideCounter" class="font-heading text-sm font-bold mx-2">1 / 9</div>
+            <button id="btnNext" class="nav-btn" onclick="nextSlide()"><i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+    </div>
+
+    <!-- Assessment View -->
+    <div id="view-assessment" class="view-container">
+        <div class="glass p-6 md:p-8 rounded-2xl w-[95%] max-w-2xl mt-4 mb-10 border-t-8 border-belief-rust relative">
+            <div id="quiz-header" class="flex justify-between items-center mb-6 border-b border-slate-600 pb-2">
+                <h2 class="font-heading text-xl md:text-2xl font-bold">Pagsusulit</h2>
+                <span id="questionCounter" class="bg-slate-800 px-3 py-1 rounded-full text-sm font-bold text-belief-gold">Q 1/10</span>
+            </div>
+
+            <div id="quiz-container">
+                <p id="questionText" class="text-lg md:text-xl font-medium mb-6">Tanong...</p>
+                <div id="optionsContainer" class="flex flex-col gap-3">
+                    <!-- Options injected here -->
+                </div>
+                <div class="mt-6 flex justify-end">
+                     <button id="btnNextQuestion" onclick="nextQuestion()" class="bg-belief-navy text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 hidden">Susunod <i class="fas fa-chevron-right ml-1"></i></button>
+                     <button id="btnSubmitQuiz" onclick="submitQuiz()" class="bg-belief-rust text-white px-6 py-2 rounded-lg font-bold hover:bg-red-800 hidden">Ipasa <i class="fas fa-paper-plane ml-1"></i></button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="result-container" class="hidden text-center py-6">
+                <i class="fas fa-medal text-6xl text-belief-gold mb-4"></i>
+                <h2 class="font-heading text-3xl font-bold mb-2">Tapos na ang Pagsusulit!</h2>
+                <p class="text-xl mb-4">Ang iyong marka: <span id="finalScoreDisplay" class="font-bold text-belief-gold text-2xl">0/10</span></p>
+                <div id="saving-loader" class="loader"></div>
+                <p id="saveStatus" class="text-sm mt-2 hidden"></p>
+
+                <button id="btnRetry" onclick="window.location.reload()" class="mt-6 bg-slate-700 text-white px-6 py-2 rounded-lg font-bold hover:bg-slate-600 hidden">
+                    Subukan Muli (Refresh)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inject JS data and logic -->
+    <script>
+        // Global State
+        let currentUser = null;
+
+        // Slide Navigation Logic
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function updateSlides() {
+            slides.forEach((s, i) => {
+                s.classList.remove('active');
+                if (i === currentSlide) s.classList.add('active');
+            });
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${slides.length}`;
+            document.getElementById('btnPrev').disabled = currentSlide === 0;
+            document.getElementById('btnNext').disabled = currentSlide === slides.length - 1;
+        }
+
+        function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; updateSlides(); } }
+        function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlides(); } }
+
+        function toggleDna(element) {
+            const content = element.nextElementSibling;
+            content.classList.toggle('open');
+            const icon = element.querySelector('i');
+            if (content.classList.contains('open')) {
+                icon.classList.replace('fa-lightbulb', 'fa-times');
+            } else {
+                icon.classList.replace('fa-times', 'fa-lightbulb');
+            }
+        }
+
+        // View Management
+        function showView(viewId) {
+            document.querySelectorAll('.view-container, .slides-wrapper').forEach(el => el.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            if(viewId === 'view-module') updateSlides();
+        }
+
+        // Mock/Client Login logic calling google script
+        function attemptLogin() {
+            const idInput = document.getElementById('studentId').value.trim();
+            const errorEl = document.getElementById('login-error');
+            const loader = document.getElementById('login-loader');
+
+            if(!idInput) {
+                errorEl.textContent = "Please enter an ID number.";
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            errorEl.classList.add('hidden');
+            loader.style.display = 'block';
+
+            // Google Apps Script backend call
+            if (typeof google !== 'undefined' && google.script && google.script.run) {
+                google.script.run
+                    .withSuccessHandler(function(response) {
+                        loader.style.display = 'none';
+                        if (response.success) {
+                            handleSuccessfulLogin(response);
+                        } else {
+                            errorEl.textContent = response.message;
+                            errorEl.classList.remove('hidden');
+                        }
+                    })
+                    .withFailureHandler(function(err) {
+                        loader.style.display = 'none';
+                        errorEl.textContent = "Connection error. Please try again.";
+                        errorEl.classList.remove('hidden');
+                    })
+                    .loginUser(idInput);
+            } else {
+                // Mock for local testing
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    handleSuccessfulLogin({success: true, name: "Local Tester", attempts: 0});
+                }, 1000);
+            }
+        }
+
+        function handleSuccessfulLogin(data) {
+            currentUser = data;
+            document.getElementById('studentNameDisplay').textContent = data.name;
+
+            let attemptText = "";
+            if (data.attempts >= 3) {
+                attemptText = "You have reached the maximum number of attempts for the quiz. You can review the module, but cannot retake the quiz.";
+            } else {
+                attemptText = `You have used ${data.attempts} out of 3 attempts.`;
+            }
+            document.getElementById('attemptsDisplay').textContent = attemptText;
+            showView('view-welcome');
+        }
+
+        function startModule() {
+            showView('view-module');
+        }
+
+        function startAssessment() {
+            if (currentUser && currentUser.attempts >= 3) {
+                alert("Maximum attempts reached. You cannot take the quiz again.");
+                return;
+            }
+            showView('view-assessment');
+            initQuiz();
+        }
+
+        // Quiz Logic
+        const allQuestions = [{"q": "Ano ang tawag sa mga ideya o konsepto na tinatanggap ng isang tao bilang totoo?", "options": ["Paniniwala", "Pananampalataya", "Agham", "Kasaysayan"], "answer": 0}, {"q": "Ano ang higit na nangangailangan ng pagtitiwala, debosyon, pag-asa, at isinasabuhay sa pamamagitan ng aksyon?", "options": ["Paniniwala", "Kaugalian", "Pananampalataya", "Tradisyon"], "answer": 2}, {"q": "Sino ang nagsabi ng kasabihang 'Ang hindi marunong lumingon sa pinanggalingan ay hindi makararating sa paroroonan'?", "options": ["Andres Bonifacio", "Emilio Aguinaldo", "Apolinario Mabini", "Dr. Jose Rizal"], "answer": 3}, {"q": "Sa metapora ng puno, ano ang kumakatawan sa 'Ugat'?", "options": ["Paniniwala", "Pananampalataya", "Kamalayan", "Kasaysayan"], "answer": 1}, {"q": "Sa metapora ng puno, ano ang kumakatawan sa 'Sanga at Bunga'?", "options": ["Paniniwala", "Pananampalataya", "Karanasan", "Kalayaan"], "answer": 0}, {"q": "Alin sa mga sumusunod ang halimbawa ng paniniwalang panlipunan?", "options": ["Paniniwala sa sariling kakayahan", "Paniniwala sa iisang Diyos", "Mga tradisyon at kaugalian ng komunidad", "Paniniwala sa mga bituin"], "answer": 2}, {"q": "Ang pahayag na 'Ang Diyos ay umiiral at may kontrol sa lahat ng bagay sa kalikasan' ay isang halimbawa ng:", "options": ["Paniniwala", "Pananampalataya", "Pamahiin", "Agham"], "answer": 1}, {"q": "Ang pag-aalay ng 'atang' upang humingi ng masaganang ani ay nagpapakita ng:", "options": ["Paniniwala", "Pananampalataya", "Siyensya", "Pampulitikang aksyon"], "answer": 1}, {"q": "Ang pahayag na 'Ang mga tao ay may kalayaan na pumili ng kanilang sariling landas' ay isang uri ng:", "options": ["Paniniwala", "Pananampalataya", "Relihiyon", "Ritwal"], "answer": 0}, {"q": "Paano nakatulong ang pananampalataya sa mga Katipunero noong panahon ng rebolusyon?", "options": ["Nagbigay ito ng kayamanan", "Nagbigay ito ng tibay ng loob at pag-asa", "Naging dahilan ito ng kanilang pagkatalo", "Wala itong naging epekto"], "answer": 1}, {"q": "Ano ang tawag sa sinaunang paniniwala at pagsamba sa mga espiritu ng kalikasan?", "options": ["Kristiyanismo", "Animismo", "Islam", "Budismo"], "answer": 1}, {"q": "Ang 'Binukot' sa Panay na hindi dapat makita ng ibang tao ay isang halimbawa ng:", "options": ["Paniniwalang Kultural", "Pananampalatayang Espiritwal", "Batas Militar", "Modernong gawi"], "answer": 0}, {"q": "Ano ang nagsisilbing batayan ng ating pagkakakilanlan (identidad) bilang Pilipino?", "options": ["Mga dayuhang impluwensya", "Mga teknolohiya", "Ating mga paniniwala at pananampalataya", "Ating pananamit"], "answer": 2}, {"q": "Paano nagkakaroon ng malalim na saysay ang mga simpleng pangyayari sa kasaysayan?", "options": ["Dahil sa agham", "Dahil sa paniniwala at pananampalataya", "Dahil sa mga aklat", "Dahil sa mga pelikula"], "answer": 1}, {"q": "Ang 'Pasyon' ay ginamit upang maintindihan ng mga Pilipino na ang paghihirap ng bansa ay magreresulta sa:", "options": ["Kamatayan", "Pang-aalipin", "Muling pagkabuhay o Kalayaan", "Gutom"], "answer": 2}, {"q": "Alin sa mga sumusunod ang hindi elemento ng paghubog ng Kamalayang Pangkasaysayan?", "options": ["Pag-unawa sa Nakaraan", "Paghubog ng Identidad", "Pagkalimot sa Tradisyon", "Pagbibigay Kahulugan"], "answer": 2}, {"q": "Ano ang ibig sabihin ng 'Kamalayang Pangkasaysayan'?", "options": ["Pag-alam sa mga petsa ng kasaysayan", "Pag-unawa kung paano nakakaapekto ang nakaraan sa kasalukuyan at sa ating pagkatao", "Pagkabisado sa pangalan ng mga bayani", "Pagwawalang-bahala sa mga lumang kwento"], "answer": 1}, {"q": "Ang 'Bayanihan' ay isang manipestasyon ng ating paniniwala sa:", "options": ["Pagiging makasarili", "Kapwa at pagkakaisa", "Pera", "Katamaran"], "answer": 1}, {"q": "Ang pagsabog ng bulkan noon ay tinitingnan bilang babala dahil sa:", "options": ["Paniniwala at pagbibigay kahulugan", "Kakulangan sa edukasyon", "Impluwensya ng Kastila", "Utos ng pamahalaan"], "answer": 0}, {"q": "Bakit mahalagang malaman ang pananampalataya nina Hermano Pule?", "options": ["Upang maunawaan kung bakit sila nag-aklas", "Upang gayahin ang kanilang suot", "Upang malaman ang kanilang paboritong pagkain", "Wala itong kahalagahan"], "answer": 0}, {"q": "Ang 'Debosyon' ay isang pangunahing katangian ng:", "options": ["Paniniwala", "Pananampalataya", "Teorya", "Pilosopiya"], "answer": 1}, {"q": "Alin ang maaaring mabago batay sa bagong karanasan o ebidensya?", "options": ["Kasaysayan ng mundo", "Katotohanan", "Paniniwala", "Mga nakaraang kaganapan"], "answer": 2}, {"q": "Ang paniniwala sa sariling kakayahan na magtagumpay ay halimbawa ng paniniwalang:", "options": ["Panlipunan", "Panrelihiyon", "Pampersonal", "Pampulitika"], "answer": 2}, {"q": "Ano ang isang paraan na isinasabuhay ang pananampalataya bilang isang komunidad?", "options": ["Pag-iisa", "Mga ritwal, pista, at panalangin", "Pag-aaway", "Pagtatago"], "answer": 1}, {"q": "Sa konteksto ng Pilipinas, ano ang tinatawag na 'virtud' na ipinakita ng mga rebolusyonaryo?", "options": ["Karangyaan", "Tibay ng loob at kabutihan", "Katalinuhan sa matematika", "Galing sa sining"], "answer": 1}, {"q": "Ang pahayag na 'Ang kasaysayan ay isang serye ng mga pangyayari na nagbigay-kahulugan sa ating kasalukuyang mundo' ay isang:", "options": ["Paniniwala", "Pananampalataya", "Ritwal", "Debosyon"], "answer": 0}, {"q": "Alin sa mga sumusunod ang napanatili natin dahil sa matibay na pananampalataya?", "options": ["Mga sinaunang sasakyan", "Mga tradisyon", "Mga pangalan ng kalye", "Mga lumang gusali lamang"], "answer": 1}, {"q": "Bakit itinuturing na mahalaga ang pag-aaral ng Paniniwala at Pananampalataya sa Kasaysayan?", "options": ["Dahil inuutos ito ng batas", "Dahil nakakatulong ito sa pagpasa sa eksam", "Dahil ito ang nagbibigay hugis sa ating pag-iisip, desisyon, at pagkilos bilang isang lahi", "Upang makakuha ng mataas na marka"], "answer": 2}, {"q": "Ang pagrespeto sa mga yumaong ninuno ay nagpapakita ng ating:", "options": ["Takot sa multo", "Pagpapanatili ng tradisyon dahil sa pananampalataya", "Kawalan ng modernong kaalaman", "Kagustuhang sumikat"], "answer": 1}, {"q": "Ayon sa aralin, ano ang dapat gawin ng kabataan sa kanilang mga paniniwala?", "options": ["Itago na lamang", "Gamitin upang makatulong sa pagbuo ng mabuting kasaysayan para sa bansa", "Ipagmalaki upang makipag-away", "Kalimutan pagkatapos ng klase"], "answer": 1}];
+
+        let quizQuestions = [];
+        let currentQIndex = 0;
+        let score = 0;
+        let hasAnswered = false;
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function initQuiz() {
+            // Select 10 random questions
+            let shuffledBank = shuffleArray([...allQuestions]);
+            quizQuestions = shuffledBank.slice(0, 10);
+
+            // Format options to track correct answer after shuffle
+            quizQuestions = quizQuestions.map(q => {
+                let correctAnswerText = q.options[q.answer];
+                let shuffledOptions = shuffleArray([...q.options]);
+                let correctIndex = shuffledOptions.indexOf(correctAnswerText);
+                return { ...q, options: shuffledOptions, answer: correctIndex };
+            });
+
+            currentQIndex = 0;
+            score = 0;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            hasAnswered = false;
+            const q = quizQuestions[currentQIndex];
+            document.getElementById('questionCounter').textContent = `Q ${currentQIndex + 1}/10`;
+            document.getElementById('questionText').textContent = q.q;
+
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+
+            document.getElementById('btnNextQuestion').classList.add('hidden');
+            document.getElementById('btnSubmitQuiz').classList.add('hidden');
+
+            q.options.forEach((optText, index) => {
+                const div = document.createElement('div');
+                div.className = 'quiz-option bg-slate-800/80 p-4 rounded-xl text-left font-medium';
+                div.textContent = optText;
+                div.onclick = () => selectOption(index, div);
+                optionsContainer.appendChild(div);
+            });
+        }
+
+        function selectOption(selectedIndex, element) {
+            if (hasAnswered) return;
+            hasAnswered = true;
+
+            const q = quizQuestions[currentQIndex];
+            const optionsNodes = document.getElementById('optionsContainer').childNodes;
+
+            // Disable all
+            optionsNodes.forEach(node => node.classList.add('disabled'));
+
+            if (selectedIndex === q.answer) {
+                element.classList.add('correct');
+                score++;
+            } else {
+                element.classList.add('wrong');
+                // Highlight correct
+                optionsNodes[q.answer].classList.add('correct');
+            }
+
+            if (currentQIndex < quizQuestions.length - 1) {
+                document.getElementById('btnNextQuestion').classList.remove('hidden');
+            } else {
+                document.getElementById('btnSubmitQuiz').classList.remove('hidden');
+            }
+        }
+
+        function nextQuestion() {
+            currentQIndex++;
+            loadQuestion();
+        }
+
+        function submitQuiz() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('quiz-header').classList.add('hidden');
+
+            const resultContainer = document.getElementById('result-container');
+            resultContainer.classList.remove('hidden');
+
+            document.getElementById('finalScoreDisplay').textContent = `${score}/10`;
+
+            const loader = document.getElementById('saving-loader');
+            const status = document.getElementById('saveStatus');
+            loader.style.display = 'block';
+            status.textContent = "Saving score...";
+            status.classList.remove('hidden', 'text-green-400', 'text-red-400');
+            status.classList.add('text-slate-300');
+
+            if (typeof google !== 'undefined' && google.script && google.script.run) {
+                const idInput = document.getElementById('studentId').value.trim();
+                google.script.run
+                    .withSuccessHandler(function(response) {
+                        loader.style.display = 'none';
+                        if(response.success) {
+                            status.textContent = "Score saved successfully!";
+                            status.classList.add('text-green-400');
+                            if(response.attempts < 3) {
+                                document.getElementById('btnRetry').classList.remove('hidden');
+                            }
+                        } else {
+                            status.textContent = "Error saving: " + response.message;
+                            status.classList.add('text-red-400');
+                        }
+                    })
+                    .withFailureHandler(function(err) {
+                        loader.style.display = 'none';
+                        status.textContent = "Connection error. Score not saved.";
+                        status.classList.add('text-red-400');
+                    })
+                    .saveScore(idInput, score);
+            } else {
+                // Mock
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    status.textContent = "Score saved! (Mock)";
+                    status.classList.add('text-green-400');
+                    document.getElementById('btnRetry').classList.remove('hidden');
+                }, 1000);
+            }
+        }
+    </script>
+</body>
+</html>
